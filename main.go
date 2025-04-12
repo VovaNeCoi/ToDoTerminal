@@ -14,4 +14,7 @@ func main() {
 
 	fmt.Println()
 	fmt.Println("Hello, I am ToDo list")
+
+	//
+	fmt.Print("Something")
 }
