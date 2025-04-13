@@ -1,7 +1,9 @@
 // Вызывает работу программы и импортированных пакетов и функций
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	arr := "helo435ohMygod./m,*79384)()(_+=`)"
