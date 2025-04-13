@@ -25,21 +25,21 @@ func Add(num int, shName, comm string) {
 	// Сериализовываем данные
 	dataForFile, err := json.Marshal(dataForSerialize)
 	if err != nil {
-		fmt.Print(err)
+		fmt.Println("В сериализации ошибка", err)
 		return
 	}
 
-	// Создаю обычный бинарный файл
+	// Создаю обычный json файла
 	f, err := os.Create("OurToDoList.json")
 	if err != nil {
-		fmt.Print(err)
+		fmt.Println("Создание файла", err)
 		return
 	}
 
-	// Нужно реализовать правильную обработку ошибоу через panic и вывод ошибки в виде перменной err
+	// Нужно реализовать правильную обработку ошибок через panic и вывод ошибки в виде перменной err
 	err = ioutil.WriteFile(f.Name(), dataForFile, 0644)
 	if err != nil {
-		fmt.Print(err)
+		fmt.Println("Запись в файл", err)
 		return
 	}
 }
