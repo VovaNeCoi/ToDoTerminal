@@ -1,18 +1,16 @@
-// Функция добавления новых данных в файл. Функция получает номер задачи,
-// краткое название и комментарий с пояснением. Дальше можно накинуть проверку
+// Функция добавления новых данных в файл. Функция получает номер задачи int,
+// краткое название string и комментарий с пояснением string. Дальше можно накинуть проверку
 // существования таски
 package functionality
 
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 )
 
-// Создаем структуру для хранения данных в определенном виде. Пока неясно будет ли вообще использоваться
-// Пока не использую
-type fileDataStruct struct {
+// Создаем структуру для хранения данных в определенном виде.
+type FileDataStruct struct {
 	taskNum   int
 	shortName string
 	comment   string
@@ -20,10 +18,10 @@ type fileDataStruct struct {
 
 // Добавляем созданные данные в файл. Каждое новое добавление должно вызывать функцию Add
 func Add(num int, shName, comm string) {
-	dataForSerialize := &fileDataStruct{taskNum: num, shortName: shName, comment: comm}
+	dataForSerialize := &FileDataStruct{taskNum: num, shortName: shName, comment: comm}
 
 	// Сериализовываем данные
-	dataForFile, err := json.Marshal(dataForSerialize)
+	dataForFile, err := json.MarshalIndent(dataForSerialize, " . ", " * ")
 	if err != nil {
 		fmt.Println("В сериализации ошибка", err)
 		return
@@ -37,7 +35,7 @@ func Add(num int, shName, comm string) {
 	}
 
 	// Нужно реализовать правильную обработку ошибок через panic и вывод ошибки в виде перменной err
-	err = ioutil.WriteFile(f.Name(), dataForFile, 0644)
+	err = os.WriteFile(f.Name(), dataForFile, 0644)
 	if err != nil {
 		fmt.Println("Запись в файл", err)
 		return
