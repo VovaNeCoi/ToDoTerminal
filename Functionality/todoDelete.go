@@ -9,7 +9,7 @@ import (
 )
 
 func TodoDelete(num int) {
-	deserTmpVar := &FileDataStruct{}
+	deserData := &FileDataStruct{}
 
 	// Чтение файла
 	data, err := os.ReadFile("./OurToDoList.json")
@@ -19,11 +19,12 @@ func TodoDelete(num int) {
 	}
 
 	// Десериализация
-	err = json.Unmarshal(data, deserTmpVar)
+	err = json.Unmarshal(data, deserData)
 	if err != nil {
 		fmt.Println("Десериализация", err)
 	}
 
 	// Добавить поиск из прочитанного десериализованного файла. Скорее всего
 	// реализовать структуру хэш мапы????
+
 }

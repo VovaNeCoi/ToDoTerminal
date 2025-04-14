@@ -3,17 +3,12 @@ package main
 
 import (
 	"fmt"
+
+	"./functionality"
 )
 
 func main() {
-	arr := "helo435ohMygod./m,*79384)()(_+=`)"
-
-	for i := range arr {
-		if arr[i] >= '0' && arr[i] <= '9' {
-			fmt.Print(string(arr[i]))
-		}
-	}
-
-	fmt.Println()
 	fmt.Println("Hello, I am ToDo list")
+
+	functionality.Add(1, "Покакать", "Нужно открыть дверь, зайти в туалет, снять штаны, сделать 'дела', вытереть жопу, надеть штаны")
 }
