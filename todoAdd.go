@@ -9,57 +9,92 @@ import (
 	"os"
 )
 
-// Создаем структуру для хранения данных в определенном виде.
-// Добавить пометки для полей
-type FileDataStruct struct {
-	TaskNum   int    `json:"Номер задачи"`
-	ShortName string `json:"Название"`
-	Comment   string `json:"Комментарий"`
-}
+// Название файла с данными
+const FileName = "OurToDoList.json"
 
-// Добавляем созданные данные в файл. Каждое новое добавление должно вызывать функцию Add
-func Add(num int, shName, comm string) {
-	// Название файла
-	fileName := "OurToDoList.json"
-
-	// Нужно читать данные с файла и к ним добавлять новые **Добавить обработку ошибки нулевого файла
-	tmp, err := os.ReadFile(fileName)
-	if err != nil {
-		fmt.Println("Ошибка чтения файла, ", err)
-	}
-
-	// Создается слайс с типом данных FileDataStruct
-	var dataForSerialize []FileDataStruct
-	json.Unmarshal(tmp, &dataForSerialize)
-
-	newData := &FileDataStruct{TaskNum: num, ShortName: shName, Comment: comm}
-	dataForSerialize = append(dataForSerialize, *newData)
-
-	fmt.Println(dataForSerialize)
-
-	// Сериализовываем данные. Они хранятся в типе байт
-	dataForFile, err := json.MarshalIndent(dataForSerialize, " ", " ")
-	if err != nil {
-		fmt.Println("В сериализации ошибка", err)
-		return
-	}
+// Добавляем созданные данные в файл.
+// Каждое новое добавление должно вызывать функцию Add
+func AddTask(num int, shName, comm string) error {
 
 	// Создаю обычный json файл С проверкой существования файла
-	if _, err := os.Stat("OurToDoList.json"); os.IsNotExist(err) {
-		_, err := os.Create("OurToDoList.json")
+	if _, err := os.Stat(FileName); os.IsNotExist(err) {
+		_, err := os.Create(FileName)
 		if err != nil {
-			fmt.Println("Создание файла", err)
-			return
+			return fmt.Errorf("todoAdd Ошибка создания файла, %w", err)
 		}
 	}
 
-	// Нужно реализовать правильную обработку ошибок через panic и вывод ошибки в виде перменной err
-	err = os.WriteFile(fileName, dataForFile, 0644)
+	// Считываем данные из файла и возвращаем срез
+	dataForSerialize, err := ReadFromFile()
 	if err != nil {
-		fmt.Println("Запись в файл", err)
-		return
+		return fmt.Errorf("todoAdd Ошибка чтения файла, %w", err)
 	}
+
+	// Собственно сам процесс добавления данных к уже прочитанным
+	newAddedData := &FileDataStruct{TaskNum: num, ShortName: shName, Comment: comm}
+	dataForSerialize = append(dataForSerialize, *newAddedData)
+
+	// Вызов функции записи даннных в файл
+	WriteIntoFile(dataForSerialize)
+
+	return nil
+}
+
+// Функция чтения данных из файла.
+// Возвращает сразу срез данных созданной структуры с данными из файла
+func ReadFromFile() ([]FileDataStruct, error) {
+	// Ловим ошибку пустого файла
+	size, err := os.Stat(FileName)
+	if err != nil {
+		return nil, fmt.Errorf("toDoRead Ошибка статов, %w", err)
+	}
+	if size.Size() == 0 {
+		return nil, nil
+	}
+
+	var fileData []FileDataStruct
+
+	// Считываем байты из файла
+	tmpFileData, err := os.ReadFile(FileName)
+	if err != nil {
+		return nil, fmt.Errorf("toDoRead Ошибка чтения %w", err)
+	}
+
+	// Десериализуем данные из байтового формата в FileDataStruct
+	err = json.Unmarshal(tmpFileData, &fileData)
+	if err != nil {
+		return nil, fmt.Errorf("toDoRead Ошибка десериализации %w", err)
+	}
+
+	return fileData, err
+}
+
+// Функция записи данных в файл
+// Принимает слайс из данных типа структуры. Возвращает данные ошибки
+func WriteIntoFile(data []FileDataStruct) error {
+	// Сериализовываем данные. Они хранятся в типе байт
+	dataForFile, err := json.MarshalIndent(data, " ", " ")
+	if err != nil {
+		return fmt.Errorf("todoWrite Ошибка сериализации, %w", err)
+	}
+
+	// Запись данных в файл
+	err = os.WriteFile(FileName, dataForFile, 0644)
+	if err != nil {
+		return fmt.Errorf("todoWrite Ошибка записи в файл, %w", err)
+	}
+
+	return nil
+}
+
+// Создаем структуру для хранения данных
+type FileDataStruct struct {
+	TaskNum   int    `json:"Task Number"`
+	ShortName string `json:"Name"`
+	Comment   string `json:"Poxyi"`
 }
 
 // Для дальнейшего масштабирования. Можно номер задачи задавать не вручную, а автоматически
 // Можно добавить шаги для задач, их нумерацию и дать возможность удалять их и добавлять
+
+// Вопрос на засыпку, зачем было реализовывать свои функции чтения, записи, удаления и добавления данных?
