@@ -1,5 +1,3 @@
-// Функция удаления. Получает на вход номер задачи. По нему находит задачу и
-// удаляет всю информацию об этой задаче
 package main
 
 import (
@@ -8,23 +6,34 @@ import (
 	"os"
 )
 
-func TodoDelete(num int) {
-	deserData := &FileDataStruct{}
+func DeleteTask(num int) error {
+	var deserData []FileDataStruct
 
 	// Чтение файла
 	data, err := os.ReadFile("./OurToDoList.json")
 	if err != nil {
-		fmt.Println("Ошибка чтения", err)
-		return
+		return fmt.Errorf("Ошибка чтения, %w", err)
 	}
 
 	// Десериализация
-	err = json.Unmarshal(data, deserData)
+	err = json.Unmarshal(data, &deserData)
 	if err != nil {
-		fmt.Println("Десериализация", err)
+		return fmt.Errorf("Ошибка десериализации, %w", err)
 	}
 
 	// Добавить поиск из прочитанного десериализованного файла. Скорее всего
 	// реализовать структуру хэш мапы????
+	// Нужно обработать ошибки выхода за пределы массива
+	for i, _ := range deserData {
+		if deserData[i].TaskNum == num {
+			deserData = append(deserData[:i], deserData[i+1:]...)
+		}
+	}
 
+	return err
 }
+
+// Функция создания среза по i элемент и от i
+// func createNewSlice(currSlice []FileDataStruct, index int) ([]FileDataStruct, error) {
+// 	return (append(currSlice[0:index], currSlice[index:]...)), nil
+// }
