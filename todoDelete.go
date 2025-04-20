@@ -39,17 +39,11 @@ func DeleteTask(num int) error {
 			} else {
 				deserData = append(deserData[:i], deserData[i+1:]...) // Возможна ошибка выхода за пределы массива
 				i = 0
-				fmt.Println(len(deserData), i)
-				fmt.Println()
 				continue
 			}
 		}
 		i++
 	}
-
-	fmt.Println(deserData)
-	fmt.Println()
-	fmt.Println(len(deserData))
 
 	// Запись в файл
 	err = WriteIntoFile(deserData)
