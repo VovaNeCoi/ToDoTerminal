@@ -9,6 +9,13 @@ import (
 	"os"
 )
 
+// Создаем структуру для хранения данных
+type FileDataStruct struct {
+	TaskNum   int    `json:"Task Number"`
+	ShortName string `json:"Name"`
+	Comment   string `json:"Poxyi"`
+}
+
 // Название файла с данными
 const FileName = "OurToDoList.json"
 
@@ -71,6 +78,7 @@ func ReadFromFile() ([]FileDataStruct, error) {
 
 // Функция записи данных в файл
 // Принимает слайс из данных типа структуры. Возвращает данные ошибки
+// Сам сериализовывает полученный слайс
 func WriteIntoFile(data []FileDataStruct) error {
 	// Сериализовываем данные. Они хранятся в типе байт
 	dataForFile, err := json.MarshalIndent(data, " ", " ")
@@ -85,13 +93,6 @@ func WriteIntoFile(data []FileDataStruct) error {
 	}
 
 	return nil
-}
-
-// Создаем структуру для хранения данных
-type FileDataStruct struct {
-	TaskNum   int    `json:"Task Number"`
-	ShortName string `json:"Name"`
-	Comment   string `json:"Poxyi"`
 }
 
 // Для дальнейшего масштабирования. Можно номер задачи задавать не вручную, а автоматически
