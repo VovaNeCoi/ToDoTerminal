@@ -24,16 +24,35 @@ func DeleteTask(num int) error {
 	// Добавить поиск из прочитанного десериализованного файла. Скорее всего
 	// реализовать структуру хэш мапы????
 	// Нужно обработать ошибки выхода за пределы массива
-	for i, _ := range deserData {
-		if deserData[i].TaskNum == num {
-			deserData = append(deserData[:i], deserData[i+1:]...)
+	for i := 0; ; {
+
+		if i > len(deserData) {
+			break
 		}
+
+		// На счёт строчек ифа на строчках 34-36 не уверен, что оно вообще срабатывает
+		if len(deserData) == 0 {
+			break
+		} else if deserData[i].TaskNum == num {
+			if len(deserData) == 1 {
+				deserData = nil // Возможны ошибки добавления нулевого значения в файл
+			} else {
+				deserData = append(deserData[:i], deserData[i+1:]...) // Возможна ошибка выхода за пределы массива
+				i = 0
+				continue
+			}
+		}
+		i++
+	}
+
+	// Запись в файл
+	err = WriteIntoFile(deserData)
+	if err != nil {
+		return fmt.Errorf("Ошибка записи в файл, %w", err)
 	}
 
 	return err
 }
 
-// Функция создания среза по i элемент и от i
-// func createNewSlice(currSlice []FileDataStruct, index int) ([]FileDataStruct, error) {
-// 	return (append(currSlice[0:index], currSlice[index:]...)), nil
-// }
+// По поводу реализации через хэшмапу. Ощущение что придется писать много кода для тогоо,
+// Чтобы сначала её создать, а потом её же вернуть в тип структуры
