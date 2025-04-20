@@ -1,4 +1,4 @@
-package main
+package functional
 
 import (
 	"encoding/json"
@@ -6,19 +6,20 @@ import (
 	"os"
 )
 
+// Принимает число соответствующее номеру задачи. Удаляет все соответствующие номеру задачи.
 func DeleteTask(num int) error {
 	var deserData []FileDataStruct
 
 	// Чтение файла
 	data, err := os.ReadFile("./OurToDoList.json")
 	if err != nil {
-		return fmt.Errorf("Ошибка чтения, %w", err)
+		return fmt.Errorf("ошибка чтения, %w", err)
 	}
 
 	// Десериализация
 	err = json.Unmarshal(data, &deserData)
 	if err != nil {
-		return fmt.Errorf("Ошибка десериализации, %w", err)
+		return fmt.Errorf("ошибка десериализации, %w", err)
 	}
 
 	// Добавить поиск из прочитанного десериализованного файла. Скорее всего
@@ -48,7 +49,7 @@ func DeleteTask(num int) error {
 	// Запись в файл
 	err = WriteIntoFile(deserData)
 	if err != nil {
-		return fmt.Errorf("Ошибка записи в файл, %w", err)
+		return fmt.Errorf("ошибка записи в файл, %w", err)
 	}
 
 	return err
@@ -56,3 +57,4 @@ func DeleteTask(num int) error {
 
 // По поводу реализации через хэшмапу. Ощущение что придется писать много кода для тогоо,
 // Чтобы сначала её создать, а потом её же вернуть в тип структуры
+// Добавить в обе функции счетчик созданных
