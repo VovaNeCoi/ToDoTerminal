@@ -1,7 +1,7 @@
 // Функция добавления новых данных в файл. Функция получает номер задачи int,
 // краткое название string и комментарий с пояснением string. Дальше можно накинуть проверку
 // существования таски
-package main
+package functional
 
 import (
 	"encoding/json"
@@ -27,14 +27,14 @@ func AddTask(num int, shName, comm string) error {
 	if _, err := os.Stat(FileName); os.IsNotExist(err) {
 		_, err := os.Create(FileName)
 		if err != nil {
-			return fmt.Errorf("todoAdd Ошибка создания файла, %w", err)
+			return fmt.Errorf("todoAdd ошибка создания файла, %w", err)
 		}
 	}
 
 	// Считываем данные из файла и возвращаем срез
 	dataForSerialize, err := ReadFromFile()
 	if err != nil {
-		return fmt.Errorf("todoAdd Ошибка чтения файла, %w", err)
+		return fmt.Errorf("todoAdd ошибка чтения файла, %w", err)
 	}
 
 	// Собственно сам процесс добавления данных к уже прочитанным
@@ -53,7 +53,7 @@ func ReadFromFile() ([]FileDataStruct, error) {
 	// Ловим ошибку пустого файла
 	size, err := os.Stat(FileName)
 	if err != nil {
-		return nil, fmt.Errorf("toDoRead Ошибка статов, %w", err)
+		return nil, fmt.Errorf("toDoRead ошибка статов, %w", err)
 	}
 	if size.Size() == 0 {
 		return nil, nil
@@ -64,13 +64,13 @@ func ReadFromFile() ([]FileDataStruct, error) {
 	// Считываем байты из файла
 	tmpFileData, err := os.ReadFile(FileName)
 	if err != nil {
-		return nil, fmt.Errorf("toDoRead Ошибка чтения %w", err)
+		return nil, fmt.Errorf("toDoRead ошибка чтения %w", err)
 	}
 
 	// Десериализуем данные из байтового формата в FileDataStruct
 	err = json.Unmarshal(tmpFileData, &fileData)
 	if err != nil {
-		return nil, fmt.Errorf("toDoRead Ошибка десериализации %w", err)
+		return nil, fmt.Errorf("toDoRead ошибка десериализации %w", err)
 	}
 
 	return fileData, err
@@ -83,13 +83,13 @@ func WriteIntoFile(data []FileDataStruct) error {
 	// Сериализовываем данные. Они хранятся в типе байт
 	dataForFile, err := json.MarshalIndent(data, " ", " ")
 	if err != nil {
-		return fmt.Errorf("todoWrite Ошибка сериализации, %w", err)
+		return fmt.Errorf("todoWrite ошибка сериализации, %w", err)
 	}
 
 	// Запись данных в файл
 	err = os.WriteFile(FileName, dataForFile, 0644)
 	if err != nil {
-		return fmt.Errorf("todoWrite Ошибка записи в файл, %w", err)
+		return fmt.Errorf("todoWrite ошибка записи в файл, %w", err)
 	}
 
 	return nil
