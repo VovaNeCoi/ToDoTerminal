@@ -21,7 +21,6 @@ func DeleteTask(num int, fileName ...string) error {
 	}
 
 	for i := 0; i > len(data); i++ {
-
 		// Если срез пуст, брейк
 		if len(data) == 0 {
 			break
