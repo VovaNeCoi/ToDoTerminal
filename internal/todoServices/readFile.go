@@ -12,9 +12,9 @@ import (
 // чтение произведется из дефолтного файла "OurToDoList.json"
 // Возвращает сразу срез данных FileDataStruct с данными из файла. Если данных
 // нет вернет пустой срез FileDataStruct
-func ReadFromFile(fileName string) ([]fileStruct.FileDataStruct, error) {
+func ReadFromFile(fileName ...string) ([]fileStruct.FileDataStruct, error) {
 	// Проверка и передача названия файла в тек. функции
-	currFileName, err := fileChecker.CheckFileName(fileName)
+	currFileName, err := fileChecker.CheckFileName(fileName[0])
 	if err != nil {
 		return nil, fmt.Errorf("toDoRead ошибка проверки названия файла, %w", err)
 	}
