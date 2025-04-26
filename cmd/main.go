@@ -8,6 +8,15 @@ import (
 )
 
 func main() {
+
+	fmt.Println("Hello, I am ToDo list")
+	fmt.Println("How I can help you?")
+
+	var num int
+	var shName, comm string
+
+	functions.Companion(num, shName, comm)
+
 	var err error
 	fmt.Println("Hello, I am ToDo list")
 
