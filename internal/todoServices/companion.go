@@ -1,7 +1,10 @@
 package todoServices
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	models "projMod/internal/models"
 )
 
 // UI для пользователя
@@ -15,22 +18,43 @@ func Companion(num int, shName string, comm string) {
 	fmt.Scanln(&operator)
 	switch operator {
 	case "1":
-		// читает, но не выводит (нужно создать перменную куда будет выводиться чтение)
-		ReadFromFile("")
+		// выводит список
+		var outputdata []models.FileDataStruct
+		outputdata, err := ReadFromFile("")
+		if err != nil {
+			fmt.Println(err)
+		}
+		for i := 0; i < len(outputdata); i++ {
+			fmt.Printf("Number: %d\nTag: %sComment: %s",
+				outputdata[i].TaskNum, outputdata[i].ShortName, outputdata[i].Comment)
+		}
 		Companion(num, shName, comm)
+
+		// позволяет ввести строку: номер, тег, описание
 	case "2":
 		fmt.Print("Enter task number: ")
 		fmt.Scanln(&num)
+
 		fmt.Print("Enter short description: ")
-		fmt.Scanln(&shName)
-		// не позволяет ввести описание, сразу выводит ок || не понимает пробел
+		var err error
+		shName, err = bufio.NewReader(os.Stdin).ReadString('\n')
+		if err != nil {
+			fmt.Println(err)
+		}
+
 		fmt.Print("Enter detailed description: ")
-		fmt.Scanln(&comm)
+		var errr error
+		comm, errr = bufio.NewReader(os.Stdin).ReadString('\n')
+		if errr != nil {
+			fmt.Println(errr)
+		}
+
 		AddTask(num, shName, comm)
 		fmt.Println("Ok", num, shName, comm)
 		Companion(num, shName, comm)
+
+		// удаляет строку по номеру
 	case "3":
-		// не работает удаление
 		fmt.Print("Enter task number: ")
 		fmt.Scanln(&num)
 		err := DeleteTask(num)
@@ -39,6 +63,8 @@ func Companion(num int, shName string, comm string) {
 		}
 		fmt.Println("Ok2", num, shName, comm)
 		Companion(num, shName, comm)
+
+		// выходит из списка
 	case "4":
 		break
 	default:
