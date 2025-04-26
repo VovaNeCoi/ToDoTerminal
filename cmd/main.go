@@ -18,7 +18,7 @@ func main() {
 	functions.Companion(num, shName, comm)
 
 	var err error
-	fmt.Println("Hello, I am ToDo list")
+	fmt.Println("Goodbye, I am ToDo list")
 
 	// err = functions.AddTask(2, "Покакать", "Нужно открыть дверь, зайти в туалет, снять штаны, сделать 'дела', вытереть жопу, надеть штаны")
 	// if err != nil {
