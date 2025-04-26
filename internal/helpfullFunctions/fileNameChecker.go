@@ -7,7 +7,7 @@ import "strings"
 func CheckFileName(fileNameSlice ...string) (string, error) {
 	var fileName string
 
-	// Проверка что переадно хоть что-то
+	// Проверка что передано хоть что-то
 	if len(fileNameSlice) == 0 {
 		return "OurToDoList.json", nil
 	} else {

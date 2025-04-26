@@ -20,12 +20,8 @@ func DeleteTask(num int, fileName ...string) error {
 		return fmt.Errorf("todoDeleteTask ошибка чтения, %w", err)
 	}
 
-	for i := 0; i > len(data); i++ {
-
-		// Если срез пуст, брейк
-		if len(data) == 0 {
-			break
-		} else if data[i].TaskNum == num {
+	for i := 0; i < len(data); i++ {
+		if data[i].TaskNum == num {
 			if len(data) == 1 { // Так как удаляем appendом, то один элемент = ошибка
 				data = []fileStruct.FileDataStruct{}
 			} else {
