@@ -22,12 +22,14 @@ func Companion(num int, shName string, comm string) {
 		var outputdata []models.FileDataStruct
 		outputdata, err := ReadFromFile("")
 		if err != nil {
+			// TODO in this case you continue as nothing fucking error happened...
 			fmt.Println(err)
 		}
 		for i := 0; i < len(outputdata); i++ {
 			fmt.Printf("Number: %d\nTag: %sComment: %s",
 				outputdata[i].TaskNum, outputdata[i].ShortName, outputdata[i].Comment)
 		}
+		// TODO use loop instead of zaloop
 		Companion(num, shName, comm)
 
 		// позволяет ввести строку: номер, тег, описание
@@ -39,13 +41,16 @@ func Companion(num int, shName string, comm string) {
 		var err error
 		shName, err = bufio.NewReader(os.Stdin).ReadString('\n')
 		if err != nil {
+			// TODO same problem in err case
 			fmt.Println(err)
 		}
 
 		fmt.Print("Enter detailed description: ")
+		// TODO reuse err variable
 		var errr error
 		comm, errr = bufio.NewReader(os.Stdin).ReadString('\n')
 		if errr != nil {
+			// TODO oh God, third time???
 			fmt.Println(errr)
 		}
 
@@ -59,6 +64,7 @@ func Companion(num int, shName string, comm string) {
 		fmt.Scanln(&num)
 		err := DeleteTask(num)
 		if err != nil {
+			// TODO догадаешьсяы
 			fmt.Println(err)
 		}
 		fmt.Println("Ok2", num, shName, comm)
