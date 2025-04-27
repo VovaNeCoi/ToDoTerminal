@@ -20,10 +20,11 @@ func AddTask(num int, shName, comm string, fileName ...string) error {
 	// Создаю обычный json файл С проверкой существования файла
 	// Надо задать в какой директории создается файл...
 	if _, err := os.Stat(currFileName); os.IsNotExist(err) {
-		_, err := os.Create(currFileName)
+		forClosing, err := os.Create(currFileName)
 		if err != nil {
 			return fmt.Errorf("todoAdd ошибка создания файла, %w", err)
 		}
+		defer forClosing.Close()
 	}
 
 	// Считываем данные из файла и возвращаем срез
@@ -41,3 +42,5 @@ func AddTask(num int, shName, comm string, fileName ...string) error {
 
 	return nil
 }
+
+// Возможно лучше реализовать создание файла в функции записи данных
