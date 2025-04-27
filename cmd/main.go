@@ -8,6 +8,7 @@ import (
 func main() {
 	var num int
 	var shName, comm string
+	// TODO: return errors from companion code
 	functions.Companion(num, shName, comm)
 	// Goodbuy I am todoTerminal
 }
