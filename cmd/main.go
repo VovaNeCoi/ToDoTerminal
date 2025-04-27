@@ -6,5 +6,7 @@ import (
 )
 
 func main() {
+	var num int
+	var shName, comm string
 	functions.Companion(num, shName, comm)
 }
