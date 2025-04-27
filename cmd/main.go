@@ -2,10 +2,9 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	functions "projMod/internal/todoServices"
 )
 
 func main() {
-	
+	functions.Companion(num, shName, comm)
 }
